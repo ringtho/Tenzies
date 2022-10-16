@@ -4,6 +4,21 @@ import { nanoid } from 'nanoid'
 import './App.css';
 
 function App() {
+
+  const [dice, setDice] = React.useState(allNewDice())
+
+  const [tenzies, setTenzies] = React.useState(false)
+
+  React.useEffect(()=> {
+    const allHeld = dice.every(die => die.isHeld)
+    const firstValue = dice[0].value
+    const allSame = dice.every(die => die.value === firstValue )
+    if (allHeld && allSame){
+      setTenzies(true)
+      console.log("You won!")
+    }
+  },[dice])
+
   function allNewDice() {
     const randomNumbers = []
     for (let i = 0; i < 10; i++){
@@ -19,8 +34,6 @@ function App() {
         id : nanoid()
     }
   }
-
-  const [dice, setDice] = React.useState(allNewDice())
 
   function holdDice(id){
       setDice(oldDice => oldDice.map(die => {
@@ -51,7 +64,7 @@ function App() {
             {die}
             
         </div>
-        <button className="roll-dice" onClick={rollDice}>Roll On</button>
+        <button className="roll-dice" onClick={rollDice}>{tenzies? "New Game" : "Roll On"}</button>
           
       </main>
 
