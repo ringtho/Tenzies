@@ -6,46 +6,52 @@ import './App.css';
 function App() {
   function allNewDice() {
     const randomNumbers = []
-    for (let i = 0; randomNumbers.length < 10; i++){
-        const randomNumber = Math.ceil(Math.random() * 6)
-        randomNumbers.push({
-            value: randomNumber,
-            isHeld: false,
-            id : nanoid()
-
-        })
+    for (let i = 0; i < 10; i++){
+        randomNumbers.push(generateNewDice())
     }
     return randomNumbers
   }
+
+  function generateNewDice(){
+    return {
+        value: Math.ceil(Math.random() * 6),
+        isHeld : false,
+        id : nanoid()
+    }
+  }
+
   const [dice, setDice] = React.useState(allNewDice())
-  const die = dice.map(dieRoll => <Die value={dieRoll.value} key={dieRoll.id} isHeld={()=>isHeld(dieRoll.id)} />)
+
+  function holdDice(id){
+      setDice(oldDice => oldDice.map(die => {
+        return die.id === id ? 
+        {...die, isHeld: !die.isHeld} : 
+        die
+      }))
+
+    }
+
+  
+  const die = dice.map(dieRoll => 
+    <Die value={dieRoll.value} key={dieRoll.id} isHeld={dieRoll.isHeld} holdDice={()=>holdDice(dieRoll.id)} />)
 
   function rollDice(){
-      setDice(allNewDice())
+      setDice(oldDice => oldDice.map(die => {
+        return die.isHeld ?
+        die :
+        generateNewDice()
+      }))
   }
-
-  function isHeld(id){
-      for (let i = 0; i < 10; i++){
-          if (id === dice[i].id){
-              setDice(prevState => ({
-                  ...prevState,
-                  isHeld: !isHeld
-
-              }))
-          }
-      }
-      
-      console.log(id)
-
-  }
-
 
   return (
       <main>
-          <div className="container">
-              {die}
-              <button className="roll" onClick={rollDice}>Roll On</button>
-          </div>
+        <h1 className="title">Tenzies</h1>
+        <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+        <div className="dice-container">
+            {die}
+            
+        </div>
+        <button className="roll-dice" onClick={rollDice}>Roll On</button>
           
       </main>
 
