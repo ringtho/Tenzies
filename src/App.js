@@ -10,6 +10,10 @@ function App() {
 
   const [tenzies, setTenzies] = React.useState(false)
 
+  const [count, setCount] = React.useState(0)
+
+  console.log(count)
+
   React.useEffect(()=> {
     const allHeld = dice.every(die => die.isHeld)
     const firstValue = dice[0].value
@@ -50,6 +54,7 @@ function App() {
 
   function rollDice(){
     if(!tenzies){
+      setCount(prevCount => prevCount + 1)
       setDice(oldDice => oldDice.map(die => {
         return die.isHeld ?
         die :
@@ -58,6 +63,7 @@ function App() {
     }else{
       setTenzies(false)
       setDice(allNewDice())
+      setCount(0)
     }
       
   }
@@ -71,6 +77,7 @@ function App() {
             {die}
             
         </div>
+        {tenzies && <p className="dice-message">You rolled the dice <span className="count">{count} </span>times</p>}
         <button className="roll-dice" onClick={rollDice}>{tenzies? "New Game" : "Roll On"}</button>
           
       </main>

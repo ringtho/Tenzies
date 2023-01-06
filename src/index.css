@@ -89,6 +89,15 @@ i {
   color: #0B2434;
 }
 
+.dice-message {
+  margin-top: -10px;
+}
+
+.count {
+  color: red;
+  font-weight: 700;
+}
+
 @media (min-width: 450px) {
   body {
     padding: 25px;
