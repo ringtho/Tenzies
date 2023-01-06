@@ -12,8 +12,6 @@ function App() {
 
   const [count, setCount] = React.useState(0)
 
-  console.log(count)
-
   React.useEffect(()=> {
     const allHeld = dice.every(die => die.isHeld)
     const firstValue = dice[0].value
