@@ -16,7 +16,6 @@ function App() {
     const allSame = dice.every(die => die.value === firstValue )
     if (allHeld && allSame){
       setTenzies(true)
-      console.log("You won!")
     }
   },[dice])
 
